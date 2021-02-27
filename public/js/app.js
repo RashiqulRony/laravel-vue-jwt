@@ -1955,6 +1955,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2019,9 +2021,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mounted: function mounted() {
-    console.log('Component mounted.');
-  }
+  mounted: function mounted() {}
 });
 
 /***/ }),
@@ -2047,13 +2047,150 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      loader: false
+      loader: false,
+      message: ''
     };
   },
-  mounted: function mounted() {},
+  mounted: function mounted() {
+    if (this.$globalHelper.authToken() === null) {
+      this.$router.push("/login");
+    }
+  },
   methods: {}
 });
 
@@ -38587,118 +38724,143 @@ var render = function() {
     "nav",
     { staticClass: "navbar navbar-expand-md navbar-light bg-white shadow-sm" },
     [
-      _c("div", { staticClass: "container" }, [
-        _c("a", { staticClass: "navbar-brand", attrs: { href: "/" } }, [
-          _vm._v("\n            CRUD Application\n        ")
-        ]),
-        _vm._v(" "),
-        _vm._m(0),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "collapse navbar-collapse",
-            attrs: { id: "navbarSupportedContent" }
-          },
-          [
-            _c("ul", { staticClass: "navbar-nav mr-auto" }),
-            _vm._v(" "),
-            _c(
-              "ul",
-              { staticClass: "navbar-nav ml-auto" },
-              [
-                _vm.authUser === null
-                  ? [
-                      _c(
-                        "li",
-                        { staticClass: "nav-item" },
-                        [
-                          _c(
-                            "router-link",
-                            {
-                              staticClass: "nav-link",
-                              attrs: { to: { name: "Login" } }
-                            },
-                            [_vm._v("Login")]
-                          )
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "li",
-                        { staticClass: "nav-item" },
-                        [
-                          _c(
-                            "router-link",
-                            {
-                              staticClass: "nav-link",
-                              attrs: { to: { name: "Register" } }
-                            },
-                            [_vm._v("Register")]
-                          )
-                        ],
-                        1
-                      )
-                    ]
-                  : [
-                      _c("li", { staticClass: "nav-item dropdown" }, [
+      _c(
+        "div",
+        { staticClass: "container" },
+        [
+          _c(
+            "router-link",
+            { staticClass: "navbar-brand", attrs: { to: { name: "Home" } } },
+            [_vm._v("\n            CRUD Application\n        ")]
+          ),
+          _vm._v(" "),
+          _vm._m(0),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "collapse navbar-collapse",
+              attrs: { id: "navbarSupportedContent" }
+            },
+            [
+              _vm.authUser !== null
+                ? _c("ul", { staticClass: "navbar-nav mr-auto" }, [
+                    _c(
+                      "li",
+                      { staticClass: "nav-item" },
+                      [
                         _c(
-                          "a",
+                          "router-link",
                           {
-                            staticClass: "nav-link dropdown-toggle",
-                            attrs: {
-                              id: "navbarDropdown",
-                              href: "#",
-                              role: "button",
-                              "data-toggle": "dropdown",
-                              "aria-haspopup": "true",
-                              "aria-expanded": "false"
-                            }
+                            staticClass: "nav-link",
+                            attrs: { to: { name: "Product" } }
                           },
+                          [_vm._v("Products")]
+                        )
+                      ],
+                      1
+                    )
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _c(
+                "ul",
+                { staticClass: "navbar-nav ml-auto" },
+                [
+                  _vm.authUser === null
+                    ? [
+                        _c(
+                          "li",
+                          { staticClass: "nav-item" },
                           [
-                            _vm._v(
-                              "\n                            " +
-                                _vm._s(_vm.authUser.name) +
-                                "\n                        "
+                            _c(
+                              "router-link",
+                              {
+                                staticClass: "nav-link",
+                                attrs: { to: { name: "Login" } }
+                              },
+                              [_vm._v("Login")]
                             )
-                          ]
+                          ],
+                          1
                         ),
                         _vm._v(" "),
                         _c(
-                          "div",
-                          {
-                            staticClass: "dropdown-menu dropdown-menu-right",
-                            attrs: { "aria-labelledby": "navbarDropdown" }
-                          },
+                          "li",
+                          { staticClass: "nav-item" },
                           [
                             _c(
-                              "a",
+                              "router-link",
                               {
-                                staticClass: "dropdown-item",
-                                attrs: { href: "#" },
-                                on: {
-                                  click: function($event) {
-                                    return _vm.logout()
-                                  }
-                                }
+                                staticClass: "nav-link",
+                                attrs: { to: { name: "Register" } }
                               },
-                              [
-                                _vm._v(
-                                  "\n                                Logout\n                            "
-                                )
-                              ]
+                              [_vm._v("Register")]
                             )
-                          ]
+                          ],
+                          1
                         )
-                      ])
-                    ]
-              ],
-              2
-            )
-          ]
-        )
-      ])
+                      ]
+                    : [
+                        _c("li", { staticClass: "nav-item dropdown" }, [
+                          _c(
+                            "a",
+                            {
+                              staticClass: "nav-link dropdown-toggle",
+                              attrs: {
+                                id: "navbarDropdown",
+                                href: "#",
+                                role: "button",
+                                "data-toggle": "dropdown",
+                                "aria-haspopup": "true",
+                                "aria-expanded": "false"
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(_vm.authUser.name) +
+                                  "\n                        "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "dropdown-menu dropdown-menu-right",
+                              attrs: { "aria-labelledby": "navbarDropdown" }
+                            },
+                            [
+                              _c(
+                                "a",
+                                {
+                                  staticClass: "dropdown-item",
+                                  attrs: { href: "#" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.logout()
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                                Logout\n                            "
+                                  )
+                                ]
+                              )
+                            ]
+                          )
+                        ])
+                      ]
+                ],
+                2
+              )
+            ]
+          )
+        ],
+        1
+      )
     ]
   )
 }
@@ -38790,22 +38952,445 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "row justify-content-center" }, [
+      _c("div", { staticClass: "col-md-10" }, [
+        _vm.message
+          ? _c("div", { staticClass: "alert alert-danger" }, [
+              _vm._v(
+                "\n                " + _vm._s(_vm.message) + "\n            "
+              )
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _vm._m(0)
+      ])
+    ]),
+    _vm._v(" "),
+    _vm._m(1)
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "flex-center position-ref full-height" }, [
-        _c("div", { staticClass: "content" }, [
-          _c("div", { staticClass: "title m-b-md" }, [
-            _vm._v("\n                This is product Page\n            ")
+    return _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-header" }, [
+        _vm._v("\n                    Products\n                    "),
+        _c(
+          "span",
+          {
+            staticClass: "btn btn-sm btn-info float-right",
+            attrs: {
+              "data-toggle": "modal",
+              "data-target": ".bd-example-modal-lg"
+            }
+          },
+          [_vm._v("Add Product")]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-body" }, [
+        _c("div", { staticClass: "table-responsive" }, [
+          _c("table", { staticClass: "table table-bordered table-hover" }, [
+            _c("thead", [
+              _c("tr", [
+                _c("th", [_vm._v("#")]),
+                _vm._v(" "),
+                _c("th", { attrs: { width: "5%" } }, [_vm._v("Image")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Title")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Price")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Description")]),
+                _vm._v(" "),
+                _c("th")
+              ])
+            ]),
+            _vm._v(" "),
+            _c("tbody", [
+              _c("tr", [
+                _c("td", [_vm._v("1")]),
+                _vm._v(" "),
+                _c("td", [
+                  _c("img", {
+                    attrs: {
+                      src:
+                        "https://st2.depositphotos.com/1000847/7167/i/600/depositphotos_71671117-stock-photo-bluetooth-headphones.jpg",
+                      width: "40"
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("td", [_vm._v("Test Product")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("$500.00")]),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v(
+                    "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus consequatur debitis, eius iste itaque iure quae quaerat ullam?"
+                  )
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _c("div", { staticClass: "dropdown" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-secondary dropdown-toggle",
+                        attrs: {
+                          type: "button",
+                          id: "dropdownMenu21",
+                          "data-toggle": "dropdown",
+                          "aria-haspopup": "true",
+                          "aria-expanded": "false"
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                                            Action\n                                        "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "dropdown-menu",
+                        attrs: { "aria-labelledby": "dropdownMenu21" }
+                      },
+                      [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "dropdown-item",
+                            attrs: { type: "button" }
+                          },
+                          [_vm._v("Action")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "dropdown-item",
+                            attrs: { type: "button" }
+                          },
+                          [_vm._v("Another action")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "dropdown-item",
+                            attrs: { type: "button" }
+                          },
+                          [_vm._v("Something else here")]
+                        )
+                      ]
+                    )
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("2")]),
+                _vm._v(" "),
+                _c("td", [
+                  _c("img", {
+                    attrs: {
+                      src:
+                        "https://st2.depositphotos.com/1000847/7167/i/600/depositphotos_71671117-stock-photo-bluetooth-headphones.jpg",
+                      width: "40"
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("td", [_vm._v("Test Product")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("$500.00")]),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v(
+                    "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus consequatur debitis, eius iste itaque iure quae quaerat ullam?"
+                  )
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _c("div", { staticClass: "dropdown" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-secondary dropdown-toggle",
+                        attrs: {
+                          type: "button",
+                          id: "dropdownMenu22",
+                          "data-toggle": "dropdown",
+                          "aria-haspopup": "true",
+                          "aria-expanded": "false"
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                                            Action\n                                        "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "dropdown-menu",
+                        attrs: { "aria-labelledby": "dropdownMenu22" }
+                      },
+                      [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "dropdown-item",
+                            attrs: { type: "button" }
+                          },
+                          [_vm._v("Action")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "dropdown-item",
+                            attrs: { type: "button" }
+                          },
+                          [_vm._v("Another action")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "dropdown-item",
+                            attrs: { type: "button" }
+                          },
+                          [_vm._v("Something else here")]
+                        )
+                      ]
+                    )
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("3")]),
+                _vm._v(" "),
+                _c("td", [
+                  _c("img", {
+                    attrs: {
+                      src:
+                        "https://st2.depositphotos.com/1000847/7167/i/600/depositphotos_71671117-stock-photo-bluetooth-headphones.jpg",
+                      width: "40"
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("td", [_vm._v("Test Product")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("$500.00")]),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v(
+                    "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus consequatur debitis, eius iste itaque iure quae quaerat ullam?"
+                  )
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _c("div", { staticClass: "dropdown" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-secondary dropdown-toggle",
+                        attrs: {
+                          type: "button",
+                          id: "dropdownMenu23",
+                          "data-toggle": "dropdown",
+                          "aria-haspopup": "true",
+                          "aria-expanded": "false"
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                                            Action\n                                        "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "dropdown-menu",
+                        attrs: { "aria-labelledby": "dropdownMenu23" }
+                      },
+                      [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "dropdown-item",
+                            attrs: { type: "button" }
+                          },
+                          [_vm._v("Action")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "dropdown-item",
+                            attrs: { type: "button" }
+                          },
+                          [_vm._v("Another action")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "dropdown-item",
+                            attrs: { type: "button" }
+                          },
+                          [_vm._v("Something else here")]
+                        )
+                      ]
+                    )
+                  ])
+                ])
+              ])
+            ])
           ])
         ])
       ])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "modal fade bd-example-modal-lg",
+        attrs: {
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "myLargeModalLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c("div", { staticClass: "modal-dialog modal-lg" }, [
+          _c("div", { staticClass: "modal-content" }, [
+            _c("div", { staticClass: "modal-header" }, [
+              _c("h5", { staticClass: "modal-title" }, [
+                _vm._v("Create Product")
+              ]),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "close",
+                  attrs: {
+                    type: "button",
+                    "data-dismiss": "modal",
+                    "aria-label": "Close"
+                  }
+                },
+                [
+                  _c("span", { attrs: { "aria-hidden": "true" } }, [
+                    _vm._v("×")
+                  ])
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("form", [
+              _c("div", { staticClass: "modal-body" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c(
+                    "label",
+                    { staticClass: "col-form-label", attrs: { for: "title" } },
+                    [_vm._v("Product Title")]
+                  ),
+                  _vm._v(" "),
+                  _c("input", {
+                    staticClass: "form-control",
+                    attrs: { type: "text", id: "title" }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c(
+                    "label",
+                    { staticClass: "col-form-label", attrs: { for: "price" } },
+                    [_vm._v("Product Price")]
+                  ),
+                  _vm._v(" "),
+                  _c("input", {
+                    staticClass: "form-control",
+                    attrs: {
+                      type: "number",
+                      min: "0",
+                      step: "0.05",
+                      max: "99999",
+                      id: "price"
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c(
+                    "label",
+                    {
+                      staticClass: "col-form-label",
+                      attrs: { for: "description" }
+                    },
+                    [_vm._v("Product Description")]
+                  ),
+                  _vm._v(" "),
+                  _c("textarea", {
+                    staticClass: "form-control",
+                    attrs: { id: "description" }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c(
+                    "label",
+                    { staticClass: "col-form-label", attrs: { for: "image" } },
+                    [_vm._v("Product Image")]
+                  ),
+                  _vm._v(" "),
+                  _c("input", {
+                    staticClass: "form-control",
+                    attrs: { type: "file", accept: "image/*", id: "image" }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-footer" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-secondary",
+                    attrs: { type: "button", "data-dismiss": "modal" }
+                  },
+                  [_vm._v("Close")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  { staticClass: "btn btn-primary", attrs: { type: "button" } },
+                  [_vm._v("Send message")]
+                )
+              ])
+            ])
+          ])
+        ])
+      ]
+    )
   }
 ]
 render._withStripped = true
@@ -55148,8 +55733,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODU
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\xampp\htdocs\vue-crud\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\xampp\htdocs\vue-crud\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\laravel-vue-jwt\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\laravel-vue-jwt\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
