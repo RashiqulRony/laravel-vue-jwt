@@ -2149,49 +2149,89 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       loader: false,
-      message: ''
+      message: '',
+      product: {
+        title: '',
+        price: '',
+        description: ''
+      },
+      errors: [],
+      products: []
     };
   },
   mounted: function mounted() {
     if (this.$globalHelper.authToken() === null) {
       this.$router.push("/login");
     }
+
+    this.getProduct();
   },
-  methods: {}
+  methods: {
+    getProduct: function getProduct() {
+      var _this = this;
+
+      axios.get(this.Api.auth.product, {
+        headers: this.$globalHelper.authHeader()
+      }).then(function (response) {
+        return response.data;
+      }).then(function (response) {
+        if (response.status === true) {
+          _this.products = response.data;
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    productStore: function productStore() {
+      var _this2 = this;
+
+      this.loader = true;
+      var config = {
+        headers: {
+          'content-type': 'multipart/form-data'
+        }
+      };
+      var postData = new FormData();
+      var image = document.getElementById("image").files[0];
+
+      if (image !== undefined) {
+        if (image.type === 'image/jpeg' || image.type === 'image/png' || image.type === 'image/webp' || image.type === 'image/gif') {
+          this.product.image = image;
+          postData.append('image', image);
+        } else {
+          alert('This file is not an image');
+        }
+      }
+
+      postData.append('title', this.product.title);
+      postData.append('price', this.product.price);
+      postData.append('description', this.product.description);
+      axios.post(this.Api.auth.product, postData, {
+        headers: this.$globalHelper.authHeader(),
+        config: config
+      }).then(function (response) {
+        return response.data;
+      }).then(function (response) {
+        if (response.status === true) {
+          _this2.loader = false;
+          _this2.message = response.message;
+          _this2.product.title = _this2.product.price = _this2.product.description = '';
+          $('#productModal').modal('hide');
+
+          _this2.getProduct();
+        } else {
+          _this2.loader = false;
+          _this2.errors = response.errors;
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -38956,324 +38996,70 @@ var render = function() {
     _c("div", { staticClass: "row justify-content-center" }, [
       _c("div", { staticClass: "col-md-10" }, [
         _vm.message
-          ? _c("div", { staticClass: "alert alert-danger" }, [
+          ? _c("div", { staticClass: "alert alert-secondary" }, [
               _vm._v(
                 "\n                " + _vm._s(_vm.message) + "\n            "
               )
             ])
           : _vm._e(),
         _vm._v(" "),
-        _vm._m(0)
-      ])
-    ]),
-    _vm._v(" "),
-    _vm._m(1)
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card" }, [
-      _c("div", { staticClass: "card-header" }, [
-        _vm._v("\n                    Products\n                    "),
-        _c(
-          "span",
-          {
-            staticClass: "btn btn-sm btn-info float-right",
-            attrs: {
-              "data-toggle": "modal",
-              "data-target": ".bd-example-modal-lg"
-            }
-          },
-          [_vm._v("Add Product")]
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-body" }, [
-        _c("div", { staticClass: "table-responsive" }, [
-          _c("table", { staticClass: "table table-bordered table-hover" }, [
-            _c("thead", [
-              _c("tr", [
-                _c("th", [_vm._v("#")]),
+        _c("div", { staticClass: "card" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-body" }, [
+            _c("div", { staticClass: "table-responsive" }, [
+              _c("table", { staticClass: "table table-bordered table-hover" }, [
+                _vm._m(1),
                 _vm._v(" "),
-                _c("th", { attrs: { width: "5%" } }, [_vm._v("Image")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Title")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Price")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Description")]),
-                _vm._v(" "),
-                _c("th")
-              ])
-            ]),
-            _vm._v(" "),
-            _c("tbody", [
-              _c("tr", [
-                _c("td", [_vm._v("1")]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("img", {
-                    attrs: {
-                      src:
-                        "https://st2.depositphotos.com/1000847/7167/i/600/depositphotos_71671117-stock-photo-bluetooth-headphones.jpg",
-                      width: "40"
-                    }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("td", [_vm._v("Test Product")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("$500.00")]),
-                _vm._v(" "),
-                _c("td", [
-                  _vm._v(
-                    "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus consequatur debitis, eius iste itaque iure quae quaerat ullam?"
-                  )
-                ]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("div", { staticClass: "dropdown" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-secondary dropdown-toggle",
-                        attrs: {
-                          type: "button",
-                          id: "dropdownMenu21",
-                          "data-toggle": "dropdown",
-                          "aria-haspopup": "true",
-                          "aria-expanded": "false"
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n                                            Action\n                                        "
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass: "dropdown-menu",
-                        attrs: { "aria-labelledby": "dropdownMenu21" }
-                      },
-                      [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "dropdown-item",
-                            attrs: { type: "button" }
-                          },
-                          [_vm._v("Action")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "button",
-                          {
-                            staticClass: "dropdown-item",
-                            attrs: { type: "button" }
-                          },
-                          [_vm._v("Another action")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "button",
-                          {
-                            staticClass: "dropdown-item",
-                            attrs: { type: "button" }
-                          },
-                          [_vm._v("Something else here")]
-                        )
-                      ]
-                    )
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", [_vm._v("2")]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("img", {
-                    attrs: {
-                      src:
-                        "https://st2.depositphotos.com/1000847/7167/i/600/depositphotos_71671117-stock-photo-bluetooth-headphones.jpg",
-                      width: "40"
-                    }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("td", [_vm._v("Test Product")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("$500.00")]),
-                _vm._v(" "),
-                _c("td", [
-                  _vm._v(
-                    "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus consequatur debitis, eius iste itaque iure quae quaerat ullam?"
-                  )
-                ]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("div", { staticClass: "dropdown" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-secondary dropdown-toggle",
-                        attrs: {
-                          type: "button",
-                          id: "dropdownMenu22",
-                          "data-toggle": "dropdown",
-                          "aria-haspopup": "true",
-                          "aria-expanded": "false"
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n                                            Action\n                                        "
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass: "dropdown-menu",
-                        attrs: { "aria-labelledby": "dropdownMenu22" }
-                      },
-                      [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "dropdown-item",
-                            attrs: { type: "button" }
-                          },
-                          [_vm._v("Action")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "button",
-                          {
-                            staticClass: "dropdown-item",
-                            attrs: { type: "button" }
-                          },
-                          [_vm._v("Another action")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "button",
-                          {
-                            staticClass: "dropdown-item",
-                            attrs: { type: "button" }
-                          },
-                          [_vm._v("Something else here")]
-                        )
-                      ]
-                    )
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", [_vm._v("3")]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("img", {
-                    attrs: {
-                      src:
-                        "https://st2.depositphotos.com/1000847/7167/i/600/depositphotos_71671117-stock-photo-bluetooth-headphones.jpg",
-                      width: "40"
-                    }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("td", [_vm._v("Test Product")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("$500.00")]),
-                _vm._v(" "),
-                _c("td", [
-                  _vm._v(
-                    "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus consequatur debitis, eius iste itaque iure quae quaerat ullam?"
-                  )
-                ]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("div", { staticClass: "dropdown" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-secondary dropdown-toggle",
-                        attrs: {
-                          type: "button",
-                          id: "dropdownMenu23",
-                          "data-toggle": "dropdown",
-                          "aria-haspopup": "true",
-                          "aria-expanded": "false"
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n                                            Action\n                                        "
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass: "dropdown-menu",
-                        attrs: { "aria-labelledby": "dropdownMenu23" }
-                      },
-                      [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "dropdown-item",
-                            attrs: { type: "button" }
-                          },
-                          [_vm._v("Action")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "button",
-                          {
-                            staticClass: "dropdown-item",
-                            attrs: { type: "button" }
-                          },
-                          [_vm._v("Another action")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "button",
-                          {
-                            staticClass: "dropdown-item",
-                            attrs: { type: "button" }
-                          },
-                          [_vm._v("Something else here")]
-                        )
-                      ]
-                    )
-                  ])
-                ])
+                _c(
+                  "tbody",
+                  [
+                    _vm.products.length > 0
+                      ? _vm._l(_vm.products, function(product) {
+                          return _c("tr", [
+                            _c("td", [_vm._v("1")]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("img", {
+                                attrs: {
+                                  src: "image/" + product.image,
+                                  width: "40"
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(product.title))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("$" + _vm._s(product.price))]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("div", {
+                                domProps: {
+                                  innerHTML: _vm._s(product.description)
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _vm._m(2, true)
+                          ])
+                        })
+                      : _vm._e()
+                  ],
+                  2
+                )
               ])
             ])
           ])
         ])
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
+    ]),
+    _vm._v(" "),
+    _c(
       "div",
       {
         staticClass: "modal fade bd-example-modal-lg",
         attrs: {
+          id: "productModal",
           tabindex: "-1",
           role: "dialog",
           "aria-labelledby": "myLargeModalLabel",
@@ -39283,114 +39069,312 @@ var staticRenderFns = [
       [
         _c("div", { staticClass: "modal-dialog modal-lg" }, [
           _c("div", { staticClass: "modal-content" }, [
-            _c("div", { staticClass: "modal-header" }, [
-              _c("h5", { staticClass: "modal-title" }, [
-                _vm._v("Create Product")
-              ]),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "close",
-                  attrs: {
-                    type: "button",
-                    "data-dismiss": "modal",
-                    "aria-label": "Close"
-                  }
-                },
-                [
-                  _c("span", { attrs: { "aria-hidden": "true" } }, [
-                    _vm._v("×")
-                  ])
-                ]
-              )
-            ]),
+            _vm._m(3),
             _vm._v(" "),
-            _c("form", [
-              _c("div", { staticClass: "modal-body" }, [
-                _c("div", { staticClass: "form-group" }, [
-                  _c(
-                    "label",
-                    { staticClass: "col-form-label", attrs: { for: "title" } },
-                    [_vm._v("Product Title")]
-                  ),
+            _c(
+              "form",
+              {
+                on: {
+                  submit: function($event) {
+                    $event.preventDefault()
+                    return _vm.productStore()
+                  }
+                }
+              },
+              [
+                _c("div", { staticClass: "modal-body" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "col-form-label",
+                        attrs: { for: "title" }
+                      },
+                      [_vm._v("Product Title")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.product.title,
+                          expression: "product.title"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { type: "text", id: "title" },
+                      domProps: { value: _vm.product.title },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.product, "title", $event.target.value)
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _vm.errors.title
+                      ? _c("span", { staticClass: "text-danger" }, [
+                          _c("small", [_vm._v(_vm._s(_vm.errors.title[0]))])
+                        ])
+                      : _vm._e()
+                  ]),
                   _vm._v(" "),
-                  _c("input", {
-                    staticClass: "form-control",
-                    attrs: { type: "text", id: "title" }
-                  })
+                  _c("div", { staticClass: "form-group" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "col-form-label",
+                        attrs: { for: "price" }
+                      },
+                      [_vm._v("Product Price")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.product.price,
+                          expression: "product.price"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "number",
+                        min: "0",
+                        step: "0.05",
+                        max: "99999",
+                        id: "price"
+                      },
+                      domProps: { value: _vm.product.price },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.product, "price", $event.target.value)
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _vm.errors.price
+                      ? _c("span", { staticClass: "text-danger" }, [
+                          _c("small", [_vm._v(_vm._s(_vm.errors.price[0]))])
+                        ])
+                      : _vm._e()
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "col-form-label",
+                        attrs: { for: "description" }
+                      },
+                      [_vm._v("Product Description")]
+                    ),
+                    _vm._v(" "),
+                    _c("textarea", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.product.description,
+                          expression: "product.description"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { id: "description" },
+                      domProps: { value: _vm.product.description },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.product,
+                            "description",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "col-form-label",
+                        attrs: { for: "image" }
+                      },
+                      [_vm._v("Product Image")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "form-control",
+                      attrs: { type: "file", accept: "image/*", id: "image" }
+                    }),
+                    _vm._v(" "),
+                    _vm.errors.image
+                      ? _c("span", { staticClass: "text-danger" }, [
+                          _c("small", [_vm._v(_vm._s(_vm.errors.image[0]))])
+                        ])
+                      : _vm._e()
+                  ])
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "form-group" }, [
+                _c("div", { staticClass: "modal-footer" }, [
                   _c(
-                    "label",
-                    { staticClass: "col-form-label", attrs: { for: "price" } },
-                    [_vm._v("Product Price")]
-                  ),
-                  _vm._v(" "),
-                  _c("input", {
-                    staticClass: "form-control",
-                    attrs: {
-                      type: "number",
-                      min: "0",
-                      step: "0.05",
-                      max: "99999",
-                      id: "price"
-                    }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "form-group" }, [
-                  _c(
-                    "label",
+                    "button",
                     {
-                      staticClass: "col-form-label",
-                      attrs: { for: "description" }
+                      staticClass: "btn btn-secondary",
+                      attrs: { type: "button", "data-dismiss": "modal" }
                     },
-                    [_vm._v("Product Description")]
+                    [_vm._v("Close")]
                   ),
                   _vm._v(" "),
-                  _c("textarea", {
-                    staticClass: "form-control",
-                    attrs: { id: "description" }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "form-group" }, [
                   _c(
-                    "label",
-                    { staticClass: "col-form-label", attrs: { for: "image" } },
-                    [_vm._v("Product Image")]
-                  ),
-                  _vm._v(" "),
-                  _c("input", {
-                    staticClass: "form-control",
-                    attrs: { type: "file", accept: "image/*", id: "image" }
-                  })
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { type: "submit" }
+                    },
+                    [
+                      _vm.loader === true
+                        ? _c("span", {
+                            staticClass: "spinner-border spinner-border-sm",
+                            attrs: { role: "status", "aria-hidden": "true" }
+                          })
+                        : _vm._e(),
+                      _vm._v(
+                        "\n                            Send message\n                        "
+                      )
+                    ]
+                  )
                 ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-footer" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-secondary",
-                    attrs: { type: "button", "data-dismiss": "modal" }
-                  },
-                  [_vm._v("Close")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  { staticClass: "btn btn-primary", attrs: { type: "button" } },
-                  [_vm._v("Send message")]
-                )
-              ])
-            ])
+              ]
+            )
           ])
         ])
       ]
     )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _vm._v("\n                    Products\n                    "),
+      _c(
+        "span",
+        {
+          staticClass: "btn btn-sm btn-info float-right",
+          attrs: { "data-toggle": "modal", "data-target": "#productModal" }
+        },
+        [_vm._v("Add Product")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("#")]),
+        _vm._v(" "),
+        _c("th", { attrs: { width: "5%" } }, [_vm._v("Image")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Title")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Price")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Description")]),
+        _vm._v(" "),
+        _c("th")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [
+      _c("div", { staticClass: "dropdown" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-sm btn-info dropdown-toggle",
+            attrs: {
+              type: "button",
+              id: "dropdownMenu21",
+              "data-toggle": "dropdown",
+              "aria-haspopup": "true",
+              "aria-expanded": "false"
+            }
+          },
+          [
+            _vm._v(
+              "\n                                                Action\n                                            "
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "dropdown-menu",
+            attrs: { "aria-labelledby": "dropdownMenu21" }
+          },
+          [
+            _c(
+              "button",
+              { staticClass: "dropdown-item", attrs: { type: "button" } },
+              [_vm._v("Edit")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              { staticClass: "dropdown-item", attrs: { type: "button" } },
+              [_vm._v("View")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              { staticClass: "dropdown-item", attrs: { type: "button" } },
+              [_vm._v("Delete")]
+            )
+          ]
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h5", { staticClass: "modal-title" }, [_vm._v("Create Product")]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
   }
 ]
 render._withStripped = true
@@ -55634,7 +55618,8 @@ var apiUrl = "http://127.0.0.1:8000/api";
     register: "".concat(apiUrl, "/register"),
     refreshToken: "".concat(apiUrl, "/refresh-token"),
     me: "".concat(apiUrl, "/me"),
-    logout: "".concat(apiUrl, "/logout")
+    logout: "".concat(apiUrl, "/logout"),
+    product: "".concat(apiUrl, "/product")
   }
 });
 

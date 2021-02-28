@@ -7,5 +7,7 @@ export default {
         refreshToken : `${apiUrl}/refresh-token`,
         me           : `${apiUrl}/me`,
         logout       : `${apiUrl}/logout`,
+
+        product       : `${apiUrl}/product`,
     },
 };
