@@ -3,11 +3,14 @@ import Router from 'vue-router'
 
 Vue.use(Router);
 
-import Home      from '../components/Home'
-import Product   from '../components/Product'
-import Login     from '../components/auth/Login'
-import Register  from '../components/auth/Register'
-import Header    from '../components/Header';
+import Home            from '../components/Home'
+import Login           from '../components/auth/Login'
+import Register        from '../components/auth/Register'
+import Header          from '../components/Header';
+
+import Product         from '../components/product/Index'
+import ProductCreate   from '../components/product/Create'
+import ProductEdit     from '../components/product/Edit'
 
 export default new Router({
     mode: 'history',
@@ -44,14 +47,22 @@ export default new Router({
                 'header': Header,
             },
         },
-        /*{
-            path: "/:username",
-            name: "Timeline",
+        {
+            path: "/product/create",
+            name: "ProductCreate",
             components: {
-                'default': Timeline,
-                'profile': Profile,
+                'default': ProductCreate,
+                'header': Header,
             },
-        },*/
+        },
+        {
+            path: "/product/edit/:id",
+            name: "ProductEdit",
+            components: {
+                'default': ProductEdit,
+                'header': Header,
+            },
+        },
 
 
     ],

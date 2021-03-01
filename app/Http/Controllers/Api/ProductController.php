@@ -18,7 +18,7 @@ class ProductController extends Controller
     public function index()
     {
         try {
-            $data = Product::where('user_id', Auth::guard('api')->user()->id)->get();
+            $data = Product::where('user_id', Auth::guard('api')->user()->id)->orderBy('id', 'desc')->get();
             return response()->json([
                 'status' => true,
                 'data' => $data,
@@ -122,7 +122,6 @@ class ProductController extends Controller
         $rules = [
             'title' => 'required|max:191',
             'price' => 'required|max:8',
-            'image' => 'nullable|required|image',
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -147,7 +146,8 @@ class ProductController extends Controller
                     'title'       => $request->title,
                     'price'       => $request->price,
                     'description' => $request->description,
-                    'image'       => $image ?? $product->image
+                    'image'       => $image ?? $product->image,
+                    'updated_at'  => now()
                 ]);
 
                 return response()->json([
