@@ -2154,6 +2154,8 @@ __webpack_require__.r(__webpack_exports__);
     return {
       loader: false,
       message: '',
+      isEdit: 0,
+      productId: '',
       product: {
         title: '',
         price: '',
@@ -2210,26 +2212,94 @@ __webpack_require__.r(__webpack_exports__);
       postData.append('title', this.product.title);
       postData.append('price', this.product.price);
       postData.append('description', this.product.description);
-      axios.post(this.Api.auth.product, postData, {
-        headers: this.$globalHelper.authHeader(),
-        config: config
+
+      if (this.isEdit === 1) {
+        axios.put(this.Api.auth.product + "/" + this.productId, postData, {
+          headers: this.$globalHelper.authHeader(),
+          config: config
+        }).then(function (response) {
+          return response.data;
+        }).then(function (response) {
+          if (response.status === true) {
+            _this2.loader = false;
+            _this2.message = response.message;
+
+            _this2.getProduct();
+
+            _this2.modalClose();
+          } else {
+            _this2.loader = false;
+            _this2.errors = response.errors;
+          }
+        })["catch"](function (error) {
+          console.log(error);
+        });
+      } else {
+        axios.post(this.Api.auth.product, postData, {
+          headers: this.$globalHelper.authHeader(),
+          config: config
+        }).then(function (response) {
+          return response.data;
+        }).then(function (response) {
+          if (response.status === true) {
+            _this2.loader = false;
+            _this2.message = response.message;
+
+            _this2.getProduct();
+
+            _this2.modalClose();
+          } else {
+            _this2.loader = false;
+            _this2.errors = response.errors;
+          }
+        })["catch"](function (error) {
+          console.log(error);
+        });
+      }
+    },
+    productUpdate: function productUpdate(product_id) {
+      var _this3 = this;
+
+      axios.get(this.Api.auth.product + "/" + product_id, {
+        headers: this.$globalHelper.authHeader()
       }).then(function (response) {
         return response.data;
       }).then(function (response) {
         if (response.status === true) {
-          _this2.loader = false;
-          _this2.message = response.message;
-          _this2.product.title = _this2.product.price = _this2.product.description = '';
-          $('#productModal').modal('hide');
-
-          _this2.getProduct();
-        } else {
-          _this2.loader = false;
-          _this2.errors = response.errors;
+          _this3.loader = false;
+          _this3.product.title = response.data.title;
+          _this3.product.price = response.data.price;
+          _this3.product.description = response.data.description;
+          _this3.productId = response.data.id;
+          _this3.isEdit = 1;
+          $('#productModal').modal("show");
         }
       })["catch"](function (error) {
         console.log(error);
       });
+    },
+    deleteProduct: function deleteProduct(product_id) {
+      var _this4 = this;
+
+      axios["delete"](this.Api.auth.product + "/" + product_id, {
+        headers: this.$globalHelper.authHeader()
+      }).then(function (response) {
+        return response.data;
+      }).then(function (response) {
+        if (response.status === true) {
+          _this4.message = response.message;
+
+          _this4.getProduct();
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    modalClose: function modalClose() {
+      this.isEdit = 0;
+      this.productId = '';
+      this.product.title = this.product.price = this.product.description = '';
+      $('#productModal').modal('hide');
     }
   }
 });
@@ -39040,7 +39110,68 @@ var render = function() {
                               })
                             ]),
                             _vm._v(" "),
-                            _vm._m(2, true)
+                            _c("td", [
+                              _c("div", { staticClass: "dropdown" }, [
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass:
+                                      "btn btn-sm btn-info dropdown-toggle",
+                                    attrs: {
+                                      type: "button",
+                                      id: "dropdownMenu21",
+                                      "data-toggle": "dropdown",
+                                      "aria-haspopup": "true",
+                                      "aria-expanded": "false"
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                                                Action\n                                            "
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "dropdown-menu",
+                                    attrs: {
+                                      "aria-labelledby": "dropdownMenu21"
+                                    }
+                                  },
+                                  [
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass: "dropdown-item",
+                                        attrs: { type: "button" },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.productUpdate(product.id)
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("Edit")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass: "dropdown-item",
+                                        attrs: { type: "button" },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.deleteProduct(product.id)
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("Delete")]
+                                    )
+                                  ]
+                                )
+                              ])
+                            ])
                           ])
                         })
                       : _vm._e()
@@ -39063,13 +39194,46 @@ var render = function() {
           tabindex: "-1",
           role: "dialog",
           "aria-labelledby": "myLargeModalLabel",
-          "aria-hidden": "true"
+          "data-backdrop": "static",
+          "data-keyboard": "false"
         }
       },
       [
         _c("div", { staticClass: "modal-dialog modal-lg" }, [
           _c("div", { staticClass: "modal-content" }, [
-            _vm._m(3),
+            _c("div", { staticClass: "modal-header" }, [
+              _c("h5", { staticClass: "modal-title" }, [
+                _vm._v(
+                  _vm._s(_vm.isEdit === 0 ? "Create Product" : "Update Product")
+                )
+              ]),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "close",
+                  attrs: {
+                    type: "button",
+                    "data-dismiss": "modal",
+                    "aria-label": "Close"
+                  }
+                },
+                [
+                  _c(
+                    "span",
+                    {
+                      attrs: { "aria-hidden": "true" },
+                      on: {
+                        click: function($event) {
+                          return _vm.modalClose()
+                        }
+                      }
+                    },
+                    [_vm._v("×")]
+                  )
+                ]
+              )
+            ]),
             _vm._v(" "),
             _c(
               "form",
@@ -39232,7 +39396,12 @@ var render = function() {
                     "button",
                     {
                       staticClass: "btn btn-secondary",
-                      attrs: { type: "button", "data-dismiss": "modal" }
+                      attrs: { type: "button", "data-dismiss": "modal" },
+                      on: {
+                        click: function($event) {
+                          return _vm.modalClose()
+                        }
+                      }
                     },
                     [_vm._v("Close")]
                   ),
@@ -39251,7 +39420,11 @@ var render = function() {
                           })
                         : _vm._e(),
                       _vm._v(
-                        "\n                            Send message\n                        "
+                        "\n                            " +
+                          _vm._s(
+                            _vm.isEdit === 0 ? "Save Product" : "Update Product"
+                          ) +
+                          "\n                        "
                       )
                     ]
                   )
@@ -39299,81 +39472,6 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th")
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [
-      _c("div", { staticClass: "dropdown" }, [
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-sm btn-info dropdown-toggle",
-            attrs: {
-              type: "button",
-              id: "dropdownMenu21",
-              "data-toggle": "dropdown",
-              "aria-haspopup": "true",
-              "aria-expanded": "false"
-            }
-          },
-          [
-            _vm._v(
-              "\n                                                Action\n                                            "
-            )
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "dropdown-menu",
-            attrs: { "aria-labelledby": "dropdownMenu21" }
-          },
-          [
-            _c(
-              "button",
-              { staticClass: "dropdown-item", attrs: { type: "button" } },
-              [_vm._v("Edit")]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              { staticClass: "dropdown-item", attrs: { type: "button" } },
-              [_vm._v("View")]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              { staticClass: "dropdown-item", attrs: { type: "button" } },
-              [_vm._v("Delete")]
-            )
-          ]
-        )
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
-      _c("h5", { staticClass: "modal-title" }, [_vm._v("Create Product")]),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: {
-            type: "button",
-            "data-dismiss": "modal",
-            "aria-label": "Close"
-          }
-        },
-        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      )
     ])
   }
 ]

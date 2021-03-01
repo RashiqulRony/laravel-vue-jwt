@@ -40,9 +40,8 @@
                                                     Action
                                                 </button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenu21">
-                                                    <button class="dropdown-item" type="button">Edit</button>
-                                                    <button class="dropdown-item" type="button">View</button>
-                                                    <button class="dropdown-item" type="button">Delete</button>
+                                                    <button @click="productUpdate(product.id)" class="dropdown-item" type="button">Edit</button>
+                                                    <button @click="deleteProduct(product.id)" class="dropdown-item" type="button">Delete</button>
                                                 </div>
                                             </div>
                                         </td>
@@ -56,13 +55,13 @@
             </div>
         </div>
 
-        <div class="modal fade bd-example-modal-lg" id="productModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal fade bd-example-modal-lg" id="productModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Create Product</h5>
+                        <h5 class="modal-title">{{ isEdit === 0 ? "Create Product" : "Update Product" }}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                            <span @click="modalClose()" aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <form @submit.prevent="productStore()">
@@ -99,16 +98,17 @@
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" @click="modalClose()" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary">
                                 <span v-if="loader === true" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                Send message
+                                {{ isEdit === 0 ? "Save Product" : "Update Product" }}
                             </button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
+
     </div>
 </template>
 
@@ -118,6 +118,8 @@
             return {
                 loader: false,
                 message: '',
+                isEdit: 0,
+                productId: '',
                 product: {
                     title: '',
                     price: '',
@@ -172,23 +174,85 @@
                 postData.append('price', this.product.price);
                 postData.append('description', this.product.description);
 
-                axios.post(this.Api.auth.product, postData, { headers: this.$globalHelper.authHeader(), config })
+                if (this.isEdit === 1) {
+                    axios.put(this.Api.auth.product+"/"+this.productId, postData, { headers: this.$globalHelper.authHeader(), config })
+                        .then((response) => response.data)
+                        .then((response) => {
+                            if (response.status === true) {
+                                this.loader = false;
+                                this.message = response.message;
+                                this.getProduct();
+                                this.modalClose()
+                            } else {
+                                this.loader = false;
+                                this.errors = response.errors;
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
+
+                } else {
+
+                    axios.post(this.Api.auth.product, postData, { headers: this.$globalHelper.authHeader(), config })
+                        .then((response) => response.data)
+                        .then((response) => {
+                            if (response.status === true) {
+                                this.loader = false;
+                                this.message = response.message;
+                                this.getProduct();
+                                this.modalClose()
+                            } else {
+                                this.loader = false;
+                                this.errors = response.errors;
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
+                }
+
+
+            },
+
+            productUpdate(product_id) {
+                axios.get(this.Api.auth.product+"/"+product_id, { headers: this.$globalHelper.authHeader() })
                     .then((response) => response.data)
                     .then((response) => {
                         if (response.status === true) {
                             this.loader = false;
-                            this.message = response.message;
-                            this.product.title = this.product.price = this.product.description = '';
-                            $('#productModal').modal('hide');
-                            this.getProduct();
-                        } else {
-                            this.loader = false;
-                            this.errors = response.errors;
+                            this.product.title = response.data.title;
+                            this.product.price = response.data.price;
+                            this.product.description = response.data.description;
+                            this.productId = response.data.id;
+                            this.isEdit = 1;
+                            $('#productModal').modal("show");
                         }
                     })
                     .catch((error) => {
                         console.log(error);
                     });
+            },
+
+            deleteProduct(product_id) {
+                axios.delete(this.Api.auth.product+"/"+product_id, { headers: this.$globalHelper.authHeader() })
+                    .then((response) => response.data)
+                    .then((response) => {
+                        if (response.status === true) {
+                            this.message = response.message;
+                            this.getProduct();
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            },
+
+            modalClose() {
+                this.isEdit = 0;
+                this.productId = '';
+                this.product.title = this.product.price = this.product.description = '';
+                $('#productModal').modal('hide');
             }
         }
 
