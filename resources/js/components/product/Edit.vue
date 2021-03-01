@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-10">
+            <div class="col-md-9">
                 <div v-if="message" class="alert alert-secondary">
                     {{ message }}
                 </div>
@@ -37,7 +37,7 @@
 
                                 <div class="form-group">
                                     <label for="image" class="col-form-label">Product Image</label>
-                                    <input type="file" accept="image/*" class="form-control" id="image">
+                                    <input type="file" accept="image/*" @change="previewImage($event)" class="form-control" id="image">
                                     <span v-if="errors.image" class="text-danger">
                                     <small>{{ errors.image[0] }}</small>
                                 </span>
@@ -52,6 +52,14 @@
                                 </button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header">Product Image</div>
+                    <div class="card-body" v-if="product.image">
+                        <img id="previewImage" :src="'/image/'+product.image" class="img-thumbnail img-fluid">
                     </div>
                 </div>
             </div>
@@ -71,6 +79,7 @@
                     title: '',
                     price: '',
                     description: '',
+                    image: '',
                 },
                 errors: [],
             };
@@ -137,11 +146,30 @@
                             this.product.title = response.data.title;
                             this.product.price = response.data.price;
                             this.product.description = response.data.description;
+                            this.product.image = response.data.image;
                         }
                     })
                     .catch((error) => {
                         console.log(error);
                     });
+            },
+
+            previewImage(event) {
+                let image = document.getElementById("image").files[0];
+                if (image !== undefined) {
+                    if (image.type === 'image/jpeg' || image.type === 'image/png' || image.type === 'image/webp' || image.type === 'image/gif') {
+                        let reader = new FileReader();
+                        reader.onload = function () {
+                            let output = document.getElementById('previewImage');
+                            output.src = reader.result;
+                            output.style.display = "block";
+                            output.style.width = "100%";
+                        }
+                        reader.readAsDataURL(event.target.files[0]);
+                    } else {
+                        alert('This file is not an image')
+                    }
+                }
             },
 
 

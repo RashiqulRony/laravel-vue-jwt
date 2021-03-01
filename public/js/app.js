@@ -2323,6 +2323,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2331,7 +2339,8 @@ __webpack_require__.r(__webpack_exports__);
       product: {
         title: '',
         price: '',
-        description: ''
+        description: '',
+        image: ''
       },
       errors: []
     };
@@ -2340,8 +2349,6 @@ __webpack_require__.r(__webpack_exports__);
     if (this.$globalHelper.authToken() === null) {
       this.$router.push("/login");
     }
-
-    this.getProduct();
   },
   methods: {
     productStore: function productStore() {
@@ -2358,7 +2365,6 @@ __webpack_require__.r(__webpack_exports__);
 
       if (image !== undefined) {
         if (image.type === 'image/jpeg' || image.type === 'image/png' || image.type === 'image/webp' || image.type === 'image/gif') {
-          this.product.image = image;
           postData.append('image', image);
         } else {
           alert('This file is not an image');
@@ -2378,9 +2384,8 @@ __webpack_require__.r(__webpack_exports__);
           _this.loader = false;
           _this.message = response.message;
           document.getElementById('image').value = "";
-          _this.product.title = _this.product.price = _this.product.description = '';
-
-          _this.getProduct();
+          document.getElementById('imgSection').style.display = "none";
+          _this.product.title = _this.product.price = _this.product.description = _this.product.image = '';
         } else {
           _this.loader = false;
           _this.errors = response.errors;
@@ -2388,6 +2393,27 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         console.log(error);
       });
+    },
+    previewImage: function previewImage(event) {
+      var image = document.getElementById("image").files[0];
+
+      if (image !== undefined) {
+        if (image.type === 'image/jpeg' || image.type === 'image/png' || image.type === 'image/webp' || image.type === 'image/gif') {
+          var reader = new FileReader();
+
+          reader.onload = function () {
+            document.getElementById('imgSection').style.display = "block";
+            var output = document.getElementById('previewImage');
+            output.src = reader.result;
+            output.style.display = "block";
+            output.style.width = "100%";
+          };
+
+          reader.readAsDataURL(event.target.files[0]);
+        } else {
+          alert('This file is not an image');
+        }
+      }
     }
   }
 });
@@ -2465,6 +2491,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2474,7 +2508,8 @@ __webpack_require__.r(__webpack_exports__);
       product: {
         title: '',
         price: '',
-        description: ''
+        description: '',
+        image: ''
       },
       errors: []
     };
@@ -2544,10 +2579,31 @@ __webpack_require__.r(__webpack_exports__);
           _this2.product.title = response.data.title;
           _this2.product.price = response.data.price;
           _this2.product.description = response.data.description;
+          _this2.product.image = response.data.image;
         }
       })["catch"](function (error) {
         console.log(error);
       });
+    },
+    previewImage: function previewImage(event) {
+      var image = document.getElementById("image").files[0];
+
+      if (image !== undefined) {
+        if (image.type === 'image/jpeg' || image.type === 'image/png' || image.type === 'image/webp' || image.type === 'image/gif') {
+          var reader = new FileReader();
+
+          reader.onload = function () {
+            var output = document.getElementById('previewImage');
+            output.src = reader.result;
+            output.style.display = "block";
+            output.style.width = "100%";
+          };
+
+          reader.readAsDataURL(event.target.files[0]);
+        } else {
+          alert('This file is not an image');
+        }
+      }
     }
   }
 });
@@ -2563,6 +2619,20 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -39664,7 +39734,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "row justify-content-center" }, [
-      _c("div", { staticClass: "col-md-10" }, [
+      _c("div", { staticClass: "col-md-9" }, [
         _vm.message
           ? _c("div", { staticClass: "alert alert-secondary" }, [
               _vm._v(
@@ -39839,7 +39909,12 @@ var render = function() {
                     _vm._v(" "),
                     _c("input", {
                       staticClass: "form-control",
-                      attrs: { type: "file", accept: "image/*", id: "image" }
+                      attrs: { type: "file", accept: "image/*", id: "image" },
+                      on: {
+                        change: function($event) {
+                          return _vm.previewImage($event)
+                        }
+                      }
                     }),
                     _vm._v(" "),
                     _vm.errors.image
@@ -39874,11 +39949,39 @@ var render = function() {
             )
           ])
         ])
-      ])
+      ]),
+      _vm._v(" "),
+      _vm._m(0)
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "col-md-3",
+        staticStyle: { display: "none" },
+        attrs: { id: "imgSection" }
+      },
+      [
+        _c("div", { staticClass: "card" }, [
+          _c("div", { staticClass: "card-header" }, [_vm._v("Product Image")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-body" }, [
+            _c("img", {
+              staticClass: "img-thumbnail img-fluid",
+              attrs: { id: "previewImage" }
+            })
+          ])
+        ])
+      ]
+    )
+  }
+]
 render._withStripped = true
 
 
@@ -39902,7 +40005,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "row justify-content-center" }, [
-      _c("div", { staticClass: "col-md-10" }, [
+      _c("div", { staticClass: "col-md-9" }, [
         _vm.message
           ? _c("div", { staticClass: "alert alert-secondary" }, [
               _vm._v(
@@ -40077,7 +40180,12 @@ var render = function() {
                     _vm._v(" "),
                     _c("input", {
                       staticClass: "form-control",
-                      attrs: { type: "file", accept: "image/*", id: "image" }
+                      attrs: { type: "file", accept: "image/*", id: "image" },
+                      on: {
+                        change: function($event) {
+                          return _vm.previewImage($event)
+                        }
+                      }
                     }),
                     _vm._v(" "),
                     _vm.errors.image
@@ -40111,6 +40219,24 @@ var render = function() {
               ]
             )
           ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-3" }, [
+        _c("div", { staticClass: "card" }, [
+          _c("div", { staticClass: "card-header" }, [_vm._v("Product Image")]),
+          _vm._v(" "),
+          _vm.product.image
+            ? _c("div", { staticClass: "card-body" }, [
+                _c("img", {
+                  staticClass: "img-thumbnail img-fluid",
+                  attrs: {
+                    id: "previewImage",
+                    src: "/image/" + _vm.product.image
+                  }
+                })
+              ])
+            : _vm._e()
         ])
       ])
     ])
@@ -40194,11 +40320,20 @@ var render = function() {
                             _c("td", [_vm._v("$" + _vm._s(product.price))]),
                             _vm._v(" "),
                             _c("td", [
-                              _c("div", {
-                                domProps: {
-                                  innerHTML: _vm._s(product.description)
-                                }
-                              })
+                              product.description.length < 30
+                                ? _c("div", {
+                                    domProps: {
+                                      innerHTML: _vm._s(product.description)
+                                    }
+                                  })
+                                : _c("div", {
+                                    domProps: {
+                                      innerHTML: _vm._s(
+                                        product.description.substring(0, 30) +
+                                          "..."
+                                      )
+                                    }
+                                  })
                             ]),
                             _vm._v(" "),
                             _c("td", [
@@ -40291,7 +40426,89 @@ var render = function() {
       ])
     ]),
     _vm._v(" "),
-    _vm._m(1)
+    _c(
+      "div",
+      {
+        staticClass: "modal fade bd-example-modal-lg",
+        attrs: {
+          tabindex: "-1",
+          role: "dialog",
+          id: "productView",
+          "aria-labelledby": "myLargeModalLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c("div", { staticClass: "modal-dialog modal-lg" }, [
+          _c("div", { staticClass: "modal-content" }, [
+            _c("div", { staticClass: "modal-header" }, [
+              _c(
+                "h5",
+                {
+                  staticClass: "modal-title",
+                  attrs: { id: "exampleModalLabel" }
+                },
+                [_vm._v("Product Details | " + _vm._s(_vm.productData.title))]
+              ),
+              _vm._v(" "),
+              _vm._m(1)
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "modal-body" }, [
+              _c("table", { staticClass: "table table-borderless" }, [
+                _c("tr", [
+                  _c("th", [_vm._v("Title")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(":")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(_vm.productData.title))])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("th", [_vm._v("Price")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(":")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("$" + _vm._s(_vm.productData.price))])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("th", [_vm._v("Description")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(":")]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c("div", {
+                      domProps: {
+                        innerHTML: _vm._s(_vm.productData.description)
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("th", [_vm._v("Image")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(":")]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c("img", {
+                      staticClass: "img-thumbnail",
+                      attrs: {
+                        src: "image/" + _vm.productData.image,
+                        width: "50%"
+                      }
+                    })
+                  ])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _vm._m(2)
+          ])
+        ])
+      ]
+    )
   ])
 }
 var staticRenderFns = [
@@ -40320,104 +40537,32 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c(
-      "div",
+      "button",
       {
-        staticClass: "modal fade bd-example-modal-lg",
+        staticClass: "close",
         attrs: {
-          tabindex: "-1",
-          role: "dialog",
-          id: "productView",
-          "aria-labelledby": "myLargeModalLabel",
-          "aria-hidden": "true"
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
         }
       },
-      [
-        _c("div", { staticClass: "modal-dialog modal-lg" }, [
-          _c("div", { staticClass: "modal-content" }, [
-            _c("div", { staticClass: "modal-header" }, [
-              _c(
-                "h5",
-                {
-                  staticClass: "modal-title",
-                  attrs: { id: "exampleModalLabel" }
-                },
-                [_vm._v("New message")]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "close",
-                  attrs: {
-                    type: "button",
-                    "data-dismiss": "modal",
-                    "aria-label": "Close"
-                  }
-                },
-                [
-                  _c("span", { attrs: { "aria-hidden": "true" } }, [
-                    _vm._v("×")
-                  ])
-                ]
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "modal-body" }, [
-              _c("form", [
-                _c("div", { staticClass: "form-group" }, [
-                  _c(
-                    "label",
-                    {
-                      staticClass: "col-form-label",
-                      attrs: { for: "recipient-name" }
-                    },
-                    [_vm._v("Recipient:")]
-                  ),
-                  _vm._v(" "),
-                  _c("input", {
-                    staticClass: "form-control",
-                    attrs: { type: "text", id: "recipient-name" }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "form-group" }, [
-                  _c(
-                    "label",
-                    {
-                      staticClass: "col-form-label",
-                      attrs: { for: "message-text" }
-                    },
-                    [_vm._v("Message:")]
-                  ),
-                  _vm._v(" "),
-                  _c("textarea", {
-                    staticClass: "form-control",
-                    attrs: { id: "message-text" }
-                  })
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "modal-footer" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-secondary",
-                  attrs: { type: "button", "data-dismiss": "modal" }
-                },
-                [_vm._v("Close")]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                { staticClass: "btn btn-primary", attrs: { type: "button" } },
-                [_vm._v("Send message")]
-              )
-            ])
-          ])
-        ])
-      ]
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
     )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-secondary",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_vm._v("Close")]
+      )
+    ])
   }
 ]
 render._withStripped = true

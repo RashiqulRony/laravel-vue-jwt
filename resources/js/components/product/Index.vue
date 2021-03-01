@@ -33,7 +33,10 @@
                                         </td>
                                         <td>{{ product.title }}</td>
                                         <td>${{ product.price }}</td>
-                                        <td><div v-html="product.description"></div></td>
+                                        <td>
+                                            <div v-if="product.description.length < 30" v-html="product.description"></div>
+                                            <div v-else v-html="product.description.substring(0,30)+'...'"></div>
+                                        </td>
                                         <td>
                                             <div class="dropdown">
                                                 <button class="btn btn-sm btn-info dropdown-toggle" type="button" id="dropdownMenu21" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -60,26 +63,37 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Product Details | {{ productData.title }}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form>
-                            <div class="form-group">
-                                <label for="recipient-name" class="col-form-label">Recipient:</label>
-                                <input type="text" class="form-control" id="recipient-name">
-                            </div>
-                            <div class="form-group">
-                                <label for="message-text" class="col-form-label">Message:</label>
-                                <textarea class="form-control" id="message-text"></textarea>
-                            </div>
-                        </form>
+                        <table class="table table-borderless">
+                            <tr>
+                                <th>Title</th>
+                                <td>:</td>
+                                <td>{{ productData.title }}</td>
+                            </tr>
+                            <tr>
+                                <th>Price</th>
+                                <td>:</td>
+                                <td>${{ productData.price }}</td>
+                            </tr>
+                            <tr>
+                                <th>Description</th>
+                                <td>:</td>
+                                <td><div v-html="productData.description"></div></td>
+                            </tr>
+                            <tr>
+                                <th>Image</th>
+                                <td>:</td>
+                                <td><img :src="'image/'+productData.image" class="img-thumbnail" width="50%"></td>
+                            </tr>
+                        </table>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Send message</button>
                     </div>
                 </div>
             </div>
