@@ -2623,12 +2623,42 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       loader: false,
       message: '',
-      products: []
+      products: [],
+      productData: ''
     };
   },
   mounted: function mounted() {
@@ -2654,8 +2684,24 @@ __webpack_require__.r(__webpack_exports__);
         console.log(error);
       });
     },
-    deleteProduct: function deleteProduct(product_id) {
+    showProduct: function showProduct(product_id) {
       var _this2 = this;
+
+      axios.get(this.Api.auth.product + "/" + product_id, {
+        headers: this.$globalHelper.authHeader()
+      }).then(function (response) {
+        return response.data;
+      }).then(function (response) {
+        if (response.status === true) {
+          _this2.productData = response.data;
+          $('#productView').modal("show");
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    deleteProduct: function deleteProduct(product_id) {
+      var _this3 = this;
 
       axios["delete"](this.Api.auth.product + "/" + product_id, {
         headers: this.$globalHelper.authHeader()
@@ -2663,9 +2709,9 @@ __webpack_require__.r(__webpack_exports__);
         return response.data;
       }).then(function (response) {
         if (response.status === true) {
-          _this2.message = response.message;
+          _this3.message = response.message;
 
-          _this2.getProduct();
+          _this3.getProduct();
         }
       })["catch"](function (error) {
         console.log(error);
@@ -40207,6 +40253,20 @@ var render = function() {
                                         attrs: { type: "button" },
                                         on: {
                                           click: function($event) {
+                                            return _vm.showProduct(product.id)
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("View")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass: "dropdown-item",
+                                        attrs: { type: "button" },
+                                        on: {
+                                          click: function($event) {
                                             return _vm.deleteProduct(product.id)
                                           }
                                         }
@@ -40229,7 +40289,9 @@ var render = function() {
           ])
         ])
       ])
-    ])
+    ]),
+    _vm._v(" "),
+    _vm._m(1)
   ])
 }
 var staticRenderFns = [
@@ -40252,6 +40314,110 @@ var staticRenderFns = [
         _c("th")
       ])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "modal fade bd-example-modal-lg",
+        attrs: {
+          tabindex: "-1",
+          role: "dialog",
+          id: "productView",
+          "aria-labelledby": "myLargeModalLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c("div", { staticClass: "modal-dialog modal-lg" }, [
+          _c("div", { staticClass: "modal-content" }, [
+            _c("div", { staticClass: "modal-header" }, [
+              _c(
+                "h5",
+                {
+                  staticClass: "modal-title",
+                  attrs: { id: "exampleModalLabel" }
+                },
+                [_vm._v("New message")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "close",
+                  attrs: {
+                    type: "button",
+                    "data-dismiss": "modal",
+                    "aria-label": "Close"
+                  }
+                },
+                [
+                  _c("span", { attrs: { "aria-hidden": "true" } }, [
+                    _vm._v("×")
+                  ])
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "modal-body" }, [
+              _c("form", [
+                _c("div", { staticClass: "form-group" }, [
+                  _c(
+                    "label",
+                    {
+                      staticClass: "col-form-label",
+                      attrs: { for: "recipient-name" }
+                    },
+                    [_vm._v("Recipient:")]
+                  ),
+                  _vm._v(" "),
+                  _c("input", {
+                    staticClass: "form-control",
+                    attrs: { type: "text", id: "recipient-name" }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c(
+                    "label",
+                    {
+                      staticClass: "col-form-label",
+                      attrs: { for: "message-text" }
+                    },
+                    [_vm._v("Message:")]
+                  ),
+                  _vm._v(" "),
+                  _c("textarea", {
+                    staticClass: "form-control",
+                    attrs: { id: "message-text" }
+                  })
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "modal-footer" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-secondary",
+                  attrs: { type: "button", "data-dismiss": "modal" }
+                },
+                [_vm._v("Close")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                { staticClass: "btn btn-primary", attrs: { type: "button" } },
+                [_vm._v("Send message")]
+              )
+            ])
+          ])
+        ])
+      ]
+    )
   }
 ]
 render._withStripped = true
